@@ -5,6 +5,7 @@
 # 5. IP address
 # 6. Bitcoin address
 import re
+
 class regBase():
 # 仅处理字符串
     def __init__(self, regname) -> None:

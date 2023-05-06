@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JS Form Submission Example</title>
+</head>
+<body>
+  <h1>JS Form Submission Example</h1>
+  <form id="my-form">
+    <label for="file">File:</label>
+    <input type="file" id="file" name="file">
+    <button type="submit">Submit</button>
+  </form>
+  <div id="response-data">ggg</div>
+  <script>
+    const form = document.getElementById('my-form');
+    const responseDiv = document.getElementById('response-data');
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault(); // 防止表单提交后刷新页面
+      console.log(event)
+      fetch('http://127.0.0.1:8000/uploadfile/', {
+        method: 'POST',
+        body: new FormData(form)
+      })
+      .then((response) => {
+        if (response.ok) {
+          return response.text();
+        }
+        throw new Error('请求失败');
+      })
+      .then((text) => {
+        responseDiv.innerHTML = text;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    });
+  </script>
+</body>
+</html>

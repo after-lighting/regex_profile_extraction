@@ -1,13 +1,9 @@
-import os
 import re
 import docx2txt
 
-num_formatted_message_item_list = 0
-formatted_message_item_list = []
-for file_name in os.listdir('data/'):
-    # 处理原始的docx文件为元组(group_id, message_id, message_text)--start
-    base_dir_path = 'F:/graduation-project/regex/data/'
-    docx_handle = docx2txt.process(base_dir_path + file_name)
+def convert_docx_format(docx_path):
+    formatted_message_item_list = []
+    docx_handle = docx2txt.process(docx_path)
     message_item_list = re.findall(r'\d+\..*?\n{4}', docx_handle, re.S)
     for message_item in message_item_list:
         try:
@@ -16,9 +12,6 @@ for file_name in os.listdir('data/'):
             message = ""
         group_message_id = re.search(r'(?<= {4}-).*(?= {6})', message_item).group().split('_')
         item = (group_message_id[0], group_message_id[1], message)
-        # item = (group_message_id[0], group_message_id[1], message)
+        # 原始的docx文件处理为元组
         formatted_message_item_list.append(item)
-    # 处理原始的docx文件为元组(group_id, message_id, message_text)--end
-    num_formatted_message_item_list += len(formatted_message_item_list)
-    
-__all__ = ['formatted_message_item_list']
+    return formatted_message_item_list
